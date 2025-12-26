@@ -1,0 +1,181 @@
+<div class="department-list-container">
+  <!-- Header with Actions -->
+  <div class="list-header">
+    <div class="header-title">
+      <mat-icon class="title-icon">business</mat-icon>
+      <div>
+        <h1>Gestion des Départements</h1>
+        <p class="subtitle">{{ dataSource.filteredData.length }} département(s) trouvé(s)</p>
+      </div>
+    </div>
+    <div class="header-actions">
+      <button mat-raised-button color="primary" (click)="openCreate()" class="create-btn">
+        <mat-icon>add</mat-icon>
+        Nouveau Département
+      </button>
+    </div>
+  </div>
+
+  <!-- Search and Filter Bar -->
+  <mat-card class="filter-card">
+    <div class="filter-section">
+      <mat-form-field class="search-field" appearance="outline">
+        <mat-label>Rechercher</mat-label>
+        <input
+          matInput
+          [(ngModel)]="searchText"
+          (keyup)="applyFilter()"
+          placeholder="Nom, description ou ID..."
+        />
+        <mat-icon matPrefix>search</mat-icon>
+        @if (searchText) {
+          <button matSuffix mat-icon-button (click)="clearSearch()">
+            <mat-icon>close</mat-icon>
+          </button>
+        }
+      </mat-form-field>
+
+      <div class="action-buttons">
+        <button mat-stroked-button (click)="refresh()" class="action-btn">
+          <mat-icon>refresh</mat-icon>
+          Actualiser
+        </button>
+        <button mat-stroked-button (click)="exportToCSV()" class="action-btn">
+          <mat-icon>download</mat-icon>
+          Exporter CSV
+        </button>
+        @if (selection.selected.length > 0) {
+          <button mat-stroked-button color="warn" (click)="deleteSelected()" class="action-btn">
+            <mat-icon>delete_sweep</mat-icon>
+            Supprimer ({{ selection.selected.length }})
+          </button>
+        }
+      </div>
+    </div>
+  </mat-card>
+
+  <!-- Data Table -->
+  <mat-card class="table-card">
+    @if (loading) {
+      <div class="loading-state">
+        <mat-spinner diameter="50"></mat-spinner>
+        <p>Chargement des données...</p>
+      </div>
+    } @else if (dataSource.data.length === 0) {
+      <div class="empty-state">
+        <mat-icon class="empty-icon">business_center</mat-icon>
+        <h3>Aucun département</h3>
+        <p>Commencez par ajouter votre premier département au système</p>
+        <button mat-raised-button color="primary" (click)="openCreate()">
+          <mat-icon>add</mat-icon>
+          Ajouter un département
+        </button>
+      </div>
+    } @else {
+      <div class="table-wrapper">
+        <table mat-table [dataSource]="dataSource" matSort class="department-table">
+          <!-- Checkbox Column -->
+          <ng-container matColumnDef="select">
+            <th mat-header-cell *matHeaderCellDef>
+              <mat-checkbox
+                (change)="$event ? masterToggle() : null"
+                [checked]="selection.hasValue() && isAllSelected()"
+                [indeterminate]="selection.hasValue() && !isAllSelected()"
+                color="primary"
+              >
+              </mat-checkbox>
+            </th>
+            <td mat-cell *matCellDef="let row">
+              <mat-checkbox
+                (click)="$event.stopPropagation()"
+                (change)="$event ? selection.toggle(row) : null"
+                [checked]="selection.isSelected(row)"
+                color="primary"
+              >
+              </mat-checkbox>
+            </td>
+          </ng-container>
+
+          <!-- ID Column -->
+          <ng-container matColumnDef="id">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> ID </th>
+            <td mat-cell *matCellDef="let element">
+              <span class="id-badge">{{ element.id }}</span>
+            </td>
+          </ng-container>
+
+          <!-- Name Column -->
+          <ng-container matColumnDef="name">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Nom </th>
+            <td mat-cell *matCellDef="let element">
+              <div class="name-cell">
+                <div class="avatar">{{ element.name?.charAt(0) }}</div>
+                <span>{{ element.name }}</span>
+              </div>
+            </td>
+          </ng-container>
+
+          <!-- Description Column -->
+          <ng-container matColumnDef="description">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Description </th>
+            <td mat-cell *matCellDef="let element">
+              <span class="description-cell">{{ element.description || 'N/A' }}</span>
+            </td>
+          </ng-container>
+
+          <!-- Employee Count Column -->
+          <ng-container matColumnDef="employeeCount">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Employés </th>
+            <td mat-cell *matCellDef="let element">
+              <div class="count-cell">
+                <mat-icon class="count-icon">people</mat-icon>
+                <span class="count-badge">{{ element.employeeCount || 0 }}</span>
+              </div>
+            </td>
+          </ng-container>
+
+          <!-- Actions Column -->
+          <ng-container matColumnDef="actions">
+            <th mat-header-cell *matHeaderCellDef> Actions </th>
+            <td mat-cell *matCellDef="let element" class="action-cell">
+              <button
+                mat-icon-button
+                color="primary"
+                (click)="openEdit(element); $event.stopPropagation()"
+                matTooltip="Modifier"
+                class="action-icon-btn"
+              >
+                <mat-icon>edit</mat-icon>
+              </button>
+              <button
+                mat-icon-button
+                color="warn"
+                (click)="deleteDepartment(element.id, $event)"
+                matTooltip="Supprimer"
+                class="action-icon-btn"
+              >
+                <mat-icon>delete</mat-icon>
+              </button>
+            </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr
+            mat-row
+            *matRowDef="let row; columns: displayedColumns;"
+            class="table-row"
+            (click)="openEdit(row)"
+          ></tr>
+        </table>
+
+        <mat-paginator
+          [pageSizeOptions]="[5, 10, 25, 50]"
+          [pageSize]="10"
+          showFirstLastButtons
+          class="custom-paginator"
+        >
+        </mat-paginator>
+      </div>
+    }
+  </mat-card>
+</div>

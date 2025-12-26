@@ -1,0 +1,100 @@
+<mat-sidenav-container class="app-container">
+  <!-- Sidebar Navigation -->
+  <mat-sidenav
+    #sidenav
+    [opened]="sidenavOpened"
+    [mode]="'side'"
+    class="app-sidenav"
+  >
+    <div class="sidenav-header">
+      <div class="logo">
+        <mat-icon class="logo-icon">business_center</mat-icon>
+        <span class="logo-text">EquipePro</span>
+      </div>
+    </div>
+
+    <mat-nav-list class="nav-list">
+      <a
+        mat-list-item
+        routerLink="/dashboard"
+        routerLinkActive="active-link"
+        class="nav-item"
+      >
+        <mat-icon>dashboard</mat-icon>
+        <span class="nav-text">Tableau de Bord</span>
+      </a>
+
+      <a
+        mat-list-item
+        routerLink="/employees"
+        routerLinkActive="active-link"
+        class="nav-item"
+      >
+        <mat-icon>people</mat-icon>
+        <span class="nav-text">Employés</span>
+      </a>
+
+      <a
+        mat-list-item
+        routerLink="/departments"
+        routerLinkActive="active-link"
+        class="nav-item"
+      >
+        <mat-icon>business</mat-icon>
+        <span class="nav-text">Départements</span>
+      </a>
+
+      <mat-divider class="nav-divider"></mat-divider>
+
+      <div class="nav-section-title">INFORMATIONS</div>
+
+      <a mat-list-item class="nav-item info-item">
+        <mat-icon>info</mat-icon>
+        <span class="nav-text">À propos</span>
+      </a>
+
+      <a mat-list-item class="nav-item info-item">
+        <mat-icon>settings</mat-icon>
+        <span class="nav-text">Paramètres</span>
+      </a>
+    </mat-nav-list>
+
+    <div class="sidenav-footer">
+      <div class="version-info">
+        <mat-icon>verified</mat-icon>
+        <span>Version 2.0</span>
+      </div>
+    </div>
+  </mat-sidenav>
+
+  <!-- Main Content -->
+  <mat-sidenav-content class="app-content">
+    <!-- Top Toolbar -->
+    <mat-toolbar class="app-toolbar" color="primary">
+      <button
+        mat-icon-button
+        (click)="toggleSidenav()"
+        class="menu-button"
+      >
+        <mat-icon>menu</mat-icon>
+      </button>
+
+      <span class="toolbar-title">{{ title() }}</span>
+
+      <span class="spacer"></span>
+
+      <button mat-icon-button class="toolbar-icon">
+        <mat-icon>notifications</mat-icon>
+      </button>
+
+      <button mat-icon-button class="toolbar-icon">
+        <mat-icon>account_circle</mat-icon>
+      </button>
+    </mat-toolbar>
+
+    <!-- Router Outlet for Page Content -->
+    <div class="page-content">
+      <router-outlet />
+    </div>
+  </mat-sidenav-content>
+</mat-sidenav-container>

@@ -1,0 +1,41 @@
+@use 'sass:color';
+
+/* Cinematic palette + simple Material overrides */
+$bg-dark: #071025; // deep navy
+$panel: #0f1724; // slightly lighter
+$accent: #ff6b6b; // warm red accent
+$accent-2: #7ee7c6; // teal highlight
+$text: #e6eef8; // soft white
+
+body{
+  font-family: 'Inter', Arial, sans-serif;
+  background: linear-gradient(180deg, #020617 0%, #071025 60%);
+  color: $text;
+  margin:0;
+}
+
+.mat-app-background, .mat-sidenav-content{
+  background: transparent !important;
+}
+
+/* Cards */
+mat-card{
+  background: linear-gradient(180deg, rgba(16,18,28,0.6), rgba(6,8,12,0.5));
+  border-radius: 12px;
+  color: $text;
+}
+
+/* Buttons */
+.mat-flat-button.mat-primary{ background: linear-gradient(90deg,$accent, color.scale($accent, $lightness: -10%)); color:#fff }
+.mat-stroked-button{ border-color: rgba(255,255,255,0.08); color: $text }
+
+/* Table header */
+.mat-header-cell{ font-weight:600; color: $accent-2 }
+
+/* small cinematic polish */
+*{transition: all 160ms ease}
+
+/* responsiveness */
+@media (max-width: 800px){
+  .mat-column-email{ display:none }
+}

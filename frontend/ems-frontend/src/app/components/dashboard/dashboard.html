@@ -1,0 +1,155 @@
+<div class="dashboard-container">
+  <!-- Header Section -->
+  <div class="dashboard-header">
+    <div class="header-content">
+      <h1 class="dashboard-title">
+        <mat-icon class="title-icon">dashboard</mat-icon>
+        Tableau de Bord
+      </h1>
+      <p class="dashboard-subtitle">Gérez vos employés efficacement</p>
+    </div>
+    <button mat-raised-button color="primary" class="add-btn" (click)="navigateToEmployees()">
+      <mat-icon>add</mat-icon>
+      Nouvel Employé
+    </button>
+  </div>
+
+  <!-- Statistics Cards -->
+  <div class="stats-grid">
+    @for (stat of stats; track stat.title) {
+      <mat-card class="stat-card" [style.--card-color]="stat.color">
+        <div class="stat-icon-wrapper">
+          <mat-icon class="stat-icon">{{ stat.icon }}</mat-icon>
+        </div>
+        <div class="stat-content">
+          <h3 class="stat-value">{{ stat.value }}</h3>
+          <p class="stat-title">{{ stat.title }}</p>
+        </div>
+        <div class="stat-decoration"></div>
+      </mat-card>
+    }
+  </div>
+
+  <!-- Recent Employees Section -->
+  <div class="recent-section">
+    <mat-card class="recent-card">
+      <div class="section-header">
+        <h2 class="section-title">
+          <mat-icon>schedule</mat-icon>
+          Employés Récents
+        </h2>
+        <button mat-button color="primary" (click)="navigateToEmployees()">
+          Voir tout
+          <mat-icon>arrow_forward</mat-icon>
+        </button>
+      </div>
+
+      @if (loading) {
+        <div class="loading-state">
+          <mat-icon class="loading-icon">hourglass_empty</mat-icon>
+          <p>Chargement...</p>
+        </div>
+      } @else if (recentEmployees.length === 0) {
+        <div class="empty-state">
+          <mat-icon class="empty-icon">people_outline</mat-icon>
+          <h3>Aucun employé</h3>
+          <p>Commencez par ajouter votre premier employé</p>
+          <button mat-raised-button color="primary" (click)="openCreateDialog()">
+            <mat-icon>add</mat-icon>
+            Ajouter un employé
+          </button>
+        </div>
+      } @else {
+        <div class="recent-list">
+          @for (employee of recentEmployees; track employee.id) {
+            <div class="employee-item" (click)="viewEmployee(employee)">
+              <div class="employee-avatar">
+                {{ employee.firstName.charAt(0) }}{{ employee.lastName.charAt(0) }}
+              </div>
+              <div class="employee-info">
+                <h4 class="employee-name">{{ employee.firstName }} {{ employee.lastName }}</h4>
+                <p class="employee-email">{{ employee.email }}</p>
+              </div>
+              <mat-icon class="arrow-icon">chevron_right</mat-icon>
+            </div>
+          }
+        </div>
+      }
+    </mat-card>
+  </div>
+
+  <!-- Quick Actions -->
+  <div class="actions-section">
+    <mat-card class="actions-card">
+      <h2 class="section-title">
+        <mat-icon>bolt</mat-icon>
+        Actions Rapides
+      </h2>
+      <div class="actions-grid">
+        <button mat-stroked-button class="action-btn" (click)="navigateToEmployees()">
+          <mat-icon>list</mat-icon>
+          <span>Liste Complète</span>
+        </button>
+        <button mat-stroked-button class="action-btn" (click)="openCreateDialog()">
+          <mat-icon>person_add</mat-icon>
+          <span>Ajouter Employé</span>
+        </button>
+        <button mat-stroked-button class="action-btn" (click)="loadDashboardData()">
+          <mat-icon>refresh</mat-icon>
+          <span>Actualiser</span>
+        </button>
+      </div>
+    </mat-card>
+  </div>
+
+  <!-- Department Statistics Section -->
+  <div class="departments-section">
+    <mat-card class="departments-card">
+      <div class="section-header">
+        <h2 class="section-title">
+          <mat-icon>business</mat-icon>
+          Répartition par Département
+        </h2>
+        <button mat-stroked-button class="view-all-btn" (click)="navigateToDepartments()">
+          <span>Voir tous</span>
+          <mat-icon>arrow_forward</mat-icon>
+        </button>
+      </div>
+
+      @if (departmentStats.length === 0) {
+        <div class="empty-departments">
+          <mat-icon class="empty-icon">business_center</mat-icon>
+          <p>Aucun département créé</p>
+          <button mat-stroked-button (click)="navigateToDepartments()">
+            <mat-icon>add</mat-icon>
+            Créer un département
+          </button>
+        </div>
+      } @else {
+        <div class="department-stats-list">
+          @for (dept of departmentStats; track dept.name) {
+            <div class="department-stat-item">
+              <div class="dept-header">
+                <div class="dept-info">
+                  <mat-icon class="dept-icon">business</mat-icon>
+                  <div>
+                    <h3 class="dept-name">{{ dept.name }}</h3>
+                    <p class="dept-count">{{ dept.employeeCount }} employé(s)</p>
+                  </div>
+                </div>
+                <div class="dept-percentage">{{ dept.percentage | number:'1.0-0' }}%</div>
+              </div>
+              <div class="progress-bar-container">
+                <mat-progress-bar
+                  mode="determinate"
+                  [value]="dept.percentage"
+                  [color]="'primary'"
+                ></mat-progress-bar>
+              </div>
+            </div>
+          }
+        </div>
+      }
+    </mat-card>
+  </div>
+</div>

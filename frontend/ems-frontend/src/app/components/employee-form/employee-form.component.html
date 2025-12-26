@@ -1,0 +1,116 @@
+<div class="form-dialog">
+  <div class="dialog-header">
+    <div class="header-icon-wrapper">
+      <mat-icon class="header-icon">{{ mode === 'create' ? 'person_add' : 'edit' }}</mat-icon>
+    </div>
+    <div>
+      <h2 mat-dialog-title class="dialog-title">
+        {{ mode === 'create' ? 'Nouvel Employé' : 'Modifier l\'Employé' }}
+      </h2>
+      <p class="dialog-subtitle">
+        {{ mode === 'create' ? 'Ajoutez un nouvel employé au système' : 'Modifiez les informations de l\'employé' }}
+      </p>
+    </div>
+    <button mat-icon-button class="close-btn" (click)="close()" [disabled]="loading">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+
+  <mat-dialog-content class="dialog-content">
+    <form [formGroup]="form" (ngSubmit)="submit()" class="employee-form">
+      <!-- First Name Field -->
+      <mat-form-field appearance="outline" class="form-field">
+        <mat-label>Prénom</mat-label>
+        <input
+          matInput
+          formControlName="firstName"
+          placeholder="Ex: Jean"
+          [readonly]="loading"
+        />
+        <mat-icon matPrefix class="field-icon">person</mat-icon>
+        <mat-hint align="start">{{ f['firstName'].value?.length || 0 }}/50 caractères</mat-hint>
+        <mat-error>{{ getErrorMessage('firstName') }}</mat-error>
+      </mat-form-field>
+
+      <!-- Last Name Field -->
+      <mat-form-field appearance="outline" class="form-field">
+        <mat-label>Nom</mat-label>
+        <input
+          matInput
+          formControlName="lastName"
+          placeholder="Ex: Dupont"
+          [readonly]="loading"
+        />
+        <mat-icon matPrefix class="field-icon">badge</mat-icon>
+        <mat-hint align="start">{{ f['lastName'].value?.length || 0 }}/50 caractères</mat-hint>
+        <mat-error>{{ getErrorMessage('lastName') }}</mat-error>
+      </mat-form-field>
+
+      <!-- Email Field -->
+      <mat-form-field appearance="outline" class="form-field">
+        <mat-label>Email</mat-label>
+        <input
+          matInput
+          type="email"
+          formControlName="email"
+          placeholder="Ex: jean.dupont@example.com"
+          [readonly]="loading"
+        />
+        <mat-icon matPrefix class="field-icon">email</mat-icon>
+        <mat-hint align="start">{{ f['email'].value?.length || 0 }}/100 caractères</mat-hint>
+        <mat-error>{{ getErrorMessage('email') }}</mat-error>
+      </mat-form-field>
+
+      <!-- Department Field -->
+      <mat-form-field appearance="outline" class="form-field">
+        <mat-label>Département</mat-label>
+        <mat-select formControlName="departmentId" [disabled]="loading">
+          <mat-option [value]="null">Aucun département</mat-option>
+          <mat-option *ngFor="let dept of departments" [value]="dept.id">
+            {{ dept.name }}
+          </mat-option>
+        </mat-select>
+        <mat-icon matPrefix class="field-icon">business</mat-icon>
+        <mat-hint>Optionnel - Sélectionnez le département de l'employé</mat-hint>
+      </mat-form-field>
+
+      <!-- Form Status Message -->
+      @if (submitted && form.invalid) {
+        <div class="error-message">
+          <mat-icon>error_outline</mat-icon>
+          <span>Veuillez corriger les erreurs ci-dessus avant de continuer</span>
+        </div>
+      }
+    </form>
+  </mat-dialog-content>
+
+  <mat-dialog-actions class="dialog-actions">
+    <button
+      mat-stroked-button
+      (click)="close()"
+      [disabled]="loading"
+      class="cancel-btn"
+    >
+      <mat-icon>cancel</mat-icon>
+      Annuler
+    </button>
+
+    <button
+      mat-raised-button
+      color="primary"
+      (click)="submit()"
+      [disabled]="loading"
+      class="submit-btn"
+    >
+      @if (loading) {
+        <mat-spinner diameter="20" class="button-spinner"></mat-spinner>
+        <span>{{ mode === 'create' ? 'Création...' : 'Sauvegarde...' }}</span>
+      } @else {
+        <ng-container>
+          <mat-icon>{{ mode === 'create' ? 'add' : 'save' }}</mat-icon>
+          <span>{{ mode === 'create' ? 'Créer' : 'Sauvegarder' }}</span>
+        </ng-container>
+      }
+    </button>
+  </mat-dialog-actions>
+</div>

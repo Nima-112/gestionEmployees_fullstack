@@ -1,0 +1,226 @@
+.app-container {
+  height: 100vh;
+  width: 100vw;
+}
+
+// Sidenav Styles
+.app-sidenav {
+  width: 260px;
+  background: linear-gradient(180deg, #0a0f1e 0%, #05080f 100%) !important;
+  border-right: 1px solid rgba(126, 231, 198, 0.1) !important;
+  padding: 0;
+}
+
+.sidenav-header {
+  padding: 1.5rem 1rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  margin-bottom: 1rem;
+
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+
+    .logo-icon {
+      font-size: 2rem;
+      width: 2rem;
+      height: 2rem;
+      background: linear-gradient(135deg, #ff6b6b, #7ee7c6);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .logo-text {
+      font-size: 1.5rem;
+      font-weight: 700;
+      background: linear-gradient(135deg, #ff6b6b, #7ee7c6);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      letter-spacing: -0.5px;
+    }
+  }
+}
+
+.nav-list {
+  padding: 0.5rem !important;
+}
+
+.nav-item {
+  border-radius: 8px !important;
+  margin-bottom: 0.5rem !important;
+  transition: all 0.3s ease !important;
+  color: rgba(255, 255, 255, 0.7) !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 1rem !important;
+  padding: 0.75rem 1rem !important;
+
+  &:hover:not(.active-link) {
+    background: rgba(126, 231, 198, 0.1) !important;
+    color: #7ee7c6 !important;
+
+    mat-icon {
+      color: #7ee7c6 !important;
+    }
+
+    .nav-text {
+      color: #7ee7c6 !important;
+    }
+  }
+
+  &.active-link {
+    background: linear-gradient(90deg, rgba(255, 107, 107, 0.15), rgba(126, 231, 198, 0.15)) !important;
+    color: #fff !important;
+    border-left: 3px solid #7ee7c6;
+
+    mat-icon {
+      color: #7ee7c6 !important;
+    }
+
+    .nav-text {
+      color: #fff !important;
+    }
+  }
+
+  mat-icon {
+    color: rgba(255, 255, 255, 0.5) !important;
+    transition: color 0.3s ease;
+    margin-right: 0 !important;
+  }
+
+  .nav-text {
+    flex: 1;
+    color: inherit;
+    font-size: 0.95rem;
+    font-weight: 500;
+  }
+}
+
+.nav-divider {
+  margin: 1rem 0 !important;
+  background-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+.nav-section-title {
+  padding: 1rem 1rem 0.5rem 1rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 1px;
+  color: rgba(255, 255, 255, 0.4);
+}
+
+.info-item {
+  opacity: 0.6;
+
+  &:hover {
+    opacity: 1;
+  }
+}
+
+.sidenav-footer {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 1rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(0, 0, 0, 0.2);
+
+  .version-info {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.85rem;
+    color: rgba(255, 255, 255, 0.5);
+
+    mat-icon {
+      font-size: 1rem;
+      width: 1rem;
+      height: 1rem;
+      color: #7ee7c6;
+    }
+  }
+}
+
+// Content Styles
+.app-content {
+  display: flex;
+  flex-direction: column;
+}
+
+.app-toolbar {
+  background: linear-gradient(90deg, #ff6b6b, #ff8585) !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2) !important;
+  z-index: 10;
+
+  .menu-button {
+    margin-right: 1rem;
+  }
+
+  .toolbar-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    letter-spacing: -0.5px;
+  }
+
+  .spacer {
+    flex: 1 1 auto;
+  }
+
+  .toolbar-icon {
+    margin-left: 0.5rem;
+    transition: all 0.3s ease;
+
+    &:hover {
+      background: rgba(255, 255, 255, 0.1);
+      transform: scale(1.1);
+    }
+  }
+}
+
+.page-content {
+  flex: 1;
+  overflow-y: auto;
+  background: linear-gradient(180deg, #020617 0%, #071025 60%);
+  min-height: calc(100vh - 64px);
+}
+
+// Responsive Design
+@media (max-width: 960px) {
+  .app-sidenav {
+    width: 220px;
+  }
+
+  .logo-text {
+    font-size: 1.25rem !important;
+  }
+}
+
+@media (max-width: 768px) {
+  .app-sidenav {
+    width: 100%;
+    max-width: 280px;
+  }
+
+  .toolbar-title {
+    font-size: 1rem !important;
+  }
+}
+
+// Scrollbar Styles
+.page-content::-webkit-scrollbar {
+  width: 8px;
+}
+
+.page-content::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.2);
+}
+
+.page-content::-webkit-scrollbar-thumb {
+  background: rgba(126, 231, 198, 0.3);
+  border-radius: 4px;
+
+  &:hover {
+    background: rgba(126, 231, 198, 0.5);
+  }
+}

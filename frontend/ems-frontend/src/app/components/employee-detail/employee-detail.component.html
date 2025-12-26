@@ -1,0 +1,156 @@
+<div class="employee-detail-container">
+  <!-- Loading State -->
+  @if (loading) {
+    <div class="loading-state">
+      <mat-spinner diameter="60"></mat-spinner>
+      <p>Chargement des informations...</p>
+    </div>
+  }
+
+  <!-- Error State -->
+  @else if (error || !employee) {
+    <mat-card class="error-card">
+      <div class="error-content">
+        <mat-icon class="error-icon">error_outline</mat-icon>
+        <h2>Employé introuvable</h2>
+        <p>L'employé demandé n'existe pas ou a été supprimé.</p>
+        <button mat-raised-button color="primary" (click)="goBack()">
+          <mat-icon>arrow_back</mat-icon>
+          Retour à la liste
+        </button>
+      </div>
+    </mat-card>
+  }
+
+  <!-- Employee Detail -->
+  @else {
+    <!-- Header Actions -->
+    <div class="detail-header">
+      <button mat-stroked-button (click)="goBack()" class="back-btn">
+        <mat-icon>arrow_back</mat-icon>
+        Retour
+      </button>
+
+      <div class="header-actions">
+        <button mat-stroked-button (click)="editEmployee()" class="action-btn">
+          <mat-icon>edit</mat-icon>
+          Modifier
+        </button>
+        <button mat-stroked-button color="warn" (click)="deleteEmployee()" class="action-btn">
+          <mat-icon>delete</mat-icon>
+          Supprimer
+        </button>
+      </div>
+    </div>
+
+    <!-- Profile Card -->
+    <mat-card class="profile-card">
+      <div class="profile-header">
+        <div class="avatar-large">
+          {{ getInitials() }}
+        </div>
+        <div class="profile-info">
+          <h1 class="employee-name">
+            {{ employee.firstName }} {{ employee.lastName }}
+          </h1>
+          <div class="employee-meta">
+            <mat-chip class="id-chip">
+              <mat-icon>badge</mat-icon>
+              ID: {{ employee.id }}
+            </mat-chip>
+            @if (employee.departmentName) {
+              <mat-chip class="department-chip">
+                <mat-icon>business</mat-icon>
+                {{ employee.departmentName }}
+              </mat-chip>
+            }
+          </div>
+        </div>
+      </div>
+
+      <mat-divider></mat-divider>
+
+      <!-- Contact Information -->
+      <div class="info-section">
+        <h2 class="section-title">
+          <mat-icon>contact_mail</mat-icon>
+          Informations de Contact
+        </h2>
+        <div class="info-grid">
+          <div class="info-item">
+            <div class="info-label">
+              <mat-icon>email</mat-icon>
+              Email
+            </div>
+            <div class="info-value">
+              <a href="mailto:{{ employee.email }}" class="email-link">
+                {{ employee.email }}
+              </a>
+            </div>
+          </div>
+
+          <div class="info-item">
+            <div class="info-label">
+              <mat-icon>person</mat-icon>
+              Prénom
+            </div>
+            <div class="info-value">{{ employee.firstName }}</div>
+          </div>
+
+          <div class="info-item">
+            <div class="info-label">
+              <mat-icon>badge</mat-icon>
+              Nom
+            </div>
+            <div class="info-value">{{ employee.lastName }}</div>
+          </div>
+
+          <div class="info-item">
+            <div class="info-label">
+              <mat-icon>business</mat-icon>
+              Département
+            </div>
+            <div class="info-value">
+              {{ employee.departmentName || 'Non assigné' }}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <mat-divider></mat-divider>
+
+      <!-- Quick Actions -->
+      <div class="info-section">
+        <h2 class="section-title">
+          <mat-icon>touch_app</mat-icon>
+          Actions Rapides
+        </h2>
+        <div class="quick-actions">
+          <button mat-stroked-button class="quick-action-btn" (click)="editEmployee()">
+            <mat-icon>edit</mat-icon>
+            <div>
+              <div class="action-title">Modifier les informations</div>
+              <div class="action-desc">Mettre à jour le profil de l'employé</div>
+            </div>
+          </button>
+
+          <button mat-stroked-button class="quick-action-btn" disabled>
+            <mat-icon>assignment</mat-icon>
+            <div>
+              <div class="action-title">Voir les tâches</div>
+              <div class="action-desc">Consulter les tâches assignées</div>
+            </div>
+          </button>
+
+          <button mat-stroked-button class="quick-action-btn" disabled>
+            <mat-icon>history</mat-icon>
+            <div>
+              <div class="action-title">Historique</div>
+              <div class="action-desc">Voir l'historique des modifications</div>
+            </div>
+          </button>
+        </div>
+      </div>
+    </mat-card>
+  }
+</div>

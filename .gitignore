@@ -1,0 +1,138 @@
+# ================================
+# EQUIPEPRO - .gitignore
+# ================================
+
+# ================================
+# BACKEND (Spring Boot / Maven)
+# ================================
+
+# Maven
+backend/**/target/
+backend/**/.mvn/
+backend/**/mvnw
+backend/**/mvnw.cmd
+backend/**/*.jar
+backend/**/*.war
+backend/**/*.ear
+backend/**/*.class
+
+# Eclipse / STS
+backend/**/.settings/
+backend/**/.project
+backend/**/.classpath
+backend/**/.factorypath
+backend/**/bin/
+
+# IntelliJ IDEA
+backend/**/.idea/
+backend/**/*.iml
+backend/**/*.iws
+backend/**/*.ipr
+backend/**/out/
+
+# NetBeans
+backend/**/nbproject/
+backend/**/nbbuild/
+backend/**/dist/
+backend/**/nbdist/
+
+# Spring Boot
+backend/**/.spring/
+backend/**/spring.log
+
+# ================================
+# FRONTEND (Angular / Node)
+# ================================
+
+# Dependencies
+frontend/**/node_modules/
+frontend/**/npm-debug.log*
+frontend/**/yarn-debug.log*
+frontend/**/yarn-error.log*
+frontend/**/package-lock.json
+frontend/**/yarn.lock
+
+# Build outputs
+frontend/**/dist/
+frontend/**/tmp/
+frontend/**/out-tsc/
+frontend/**/.angular/
+
+# IDE - VSCode
+frontend/**/.vscode/
+!frontend/**/.vscode/settings.json
+!frontend/**/.vscode/tasks.json
+!frontend/**/.vscode/launch.json
+!frontend/**/.vscode/extensions.json
+frontend/**/*.code-workspace
+
+# IDE - WebStorm
+frontend/**/.idea/
+
+# System Files
+frontend/**/.DS_Store
+frontend/**/Thumbs.db
+
+# ================================
+# BASE DE DONNÉES
+# ================================
+
+# MySQL dumps
+*.sql
+*.dump
+
+# ================================
+# LOGS & TEMPORARY FILES
+# ================================
+
+# Logs
+*.log
+logs/
+*.log.*
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+Desktop.ini
+nul
+
+# Temporary files
+*.tmp
+*.temp
+*.swp
+*.swo
+*~
+
+# ================================
+# CONFIGURATION & SECRETS
+# ================================
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# Application properties with sensitive data (keep template version)
+# backend/**/application-prod.properties
+# backend/**/application-dev.properties
+
+# ================================
+# DIVERS
+# ================================
+
+# Backup files
+*.bak
+*.backup
+
+# Archives
+*.zip
+*.tar.gz
+*.rar
+
+# Documentation builds
+docs/_build/

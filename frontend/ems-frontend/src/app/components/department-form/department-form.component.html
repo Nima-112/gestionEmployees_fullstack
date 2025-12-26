@@ -1,0 +1,89 @@
+<div class="form-dialog">
+  <div class="dialog-header">
+    <div class="header-icon-wrapper">
+      <mat-icon class="header-icon">{{ mode === 'create' ? 'business' : 'edit' }}</mat-icon>
+    </div>
+    <div>
+      <h2 mat-dialog-title class="dialog-title">
+        {{ mode === 'create' ? 'Nouveau Département' : 'Modifier le Département' }}
+      </h2>
+      <p class="dialog-subtitle">
+        {{ mode === 'create' ? 'Ajoutez un nouveau département au système' : 'Modifiez les informations du département' }}
+      </p>
+    </div>
+    <button mat-icon-button class="close-btn" (click)="close()" [disabled]="loading">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+
+  <mat-dialog-content class="dialog-content">
+    <form [formGroup]="form" (ngSubmit)="submit()" class="department-form">
+      <!-- Name Field -->
+      <mat-form-field appearance="outline" class="form-field">
+        <mat-label>Nom du Département</mat-label>
+        <input
+          matInput
+          formControlName="name"
+          placeholder="Ex: Ressources Humaines"
+          [readonly]="loading"
+        />
+        <mat-icon matPrefix class="field-icon">business</mat-icon>
+        <mat-hint align="start">{{ f['name'].value?.length || 0 }}/100 caractères</mat-hint>
+        <mat-error>{{ getErrorMessage('name') }}</mat-error>
+      </mat-form-field>
+
+      <!-- Description Field -->
+      <mat-form-field appearance="outline" class="form-field">
+        <mat-label>Description</mat-label>
+        <textarea
+          matInput
+          formControlName="description"
+          placeholder="Ex: Gère les ressources humaines et le recrutement"
+          [readonly]="loading"
+          rows="4"
+        ></textarea>
+        <mat-icon matPrefix class="field-icon">description</mat-icon>
+        <mat-hint align="start">{{ f['description'].value?.length || 0 }}/500 caractères</mat-hint>
+        <mat-error>{{ getErrorMessage('description') }}</mat-error>
+      </mat-form-field>
+
+      <!-- Form Status Message -->
+      @if (submitted && form.invalid) {
+        <div class="error-message">
+          <mat-icon>error_outline</mat-icon>
+          <span>Veuillez corriger les erreurs ci-dessus avant de continuer</span>
+        </div>
+      }
+    </form>
+  </mat-dialog-content>
+
+  <mat-dialog-actions class="dialog-actions">
+    <button
+      mat-stroked-button
+      (click)="close()"
+      [disabled]="loading"
+      class="cancel-btn"
+    >
+      <mat-icon>cancel</mat-icon>
+      Annuler
+    </button>
+
+    <button
+      mat-raised-button
+      color="primary"
+      (click)="submit()"
+      [disabled]="loading"
+      class="submit-btn"
+    >
+      @if (loading) {
+        <mat-spinner diameter="20" class="button-spinner"></mat-spinner>
+        <span>{{ mode === 'create' ? 'Création...' : 'Sauvegarde...' }}</span>
+      } @else {
+        <ng-container>
+          <mat-icon>{{ mode === 'create' ? 'add' : 'save' }}</mat-icon>
+          <span>{{ mode === 'create' ? 'Créer' : 'Sauvegarder' }}</span>
+        </ng-container>
+      }
+    </button>
+  </mat-dialog-actions>
+</div>
