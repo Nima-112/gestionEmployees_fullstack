@@ -1,0 +1,87 @@
+h2[mat-dialog-title] {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 24px;
+
+  mat-icon {
+    font-size: 28px;
+    width: 28px;
+    height: 28px;
+  }
+}
+
+mat-dialog-content {
+  min-width: 500px;
+  max-width: 600px;
+  padding: 20px 24px;
+}
+
+.form-row {
+  margin-bottom: 16px;
+
+  &.two-columns {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+}
+
+.full-width {
+  width: 100%;
+}
+
+.roles-section {
+  margin-top: 24px;
+  padding: 16px;
+  background-color: #f5f5f5;
+  border-radius: 8px;
+
+  h3 {
+    margin: 0 0 16px 0;
+    font-size: 16px;
+    font-weight: 600;
+    color: #333;
+  }
+
+  .roles-checkboxes {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+
+    mat-checkbox {
+      ::ng-deep .mdc-label {
+        font-size: 14px;
+      }
+    }
+  }
+}
+
+mat-dialog-actions {
+  padding: 16px 24px;
+  margin: 0;
+
+  button {
+    mat-icon {
+      margin-right: 8px;
+    }
+  }
+}
+
+mat-form-field {
+  mat-icon[matPrefix] {
+    margin-right: 12px;
+    color: rgba(0, 0, 0, 0.54);
+  }
+}
+
+@media (max-width: 768px) {
+  mat-dialog-content {
+    min-width: 100%;
+    max-width: 100%;
+  }
+
+  .form-row.two-columns {
+    grid-template-columns: 1fr;
+  }
+}

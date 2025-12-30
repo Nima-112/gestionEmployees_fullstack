@@ -38,6 +38,11 @@ export class EmployeeFormComponent implements OnInit {
   loading = false;
   submitted = false;
   departments: Department[] = [];
+  availableRoles = [
+    { value: 'ROLE_ADMIN', label: 'Administrateur' },
+    { value: 'ROLE_MANAGER', label: 'Manager' },
+    { value: 'ROLE_EMPLOYEE', label: 'Employé' }
+  ];
 
   constructor(
     private fb: FormBuilder,
@@ -50,7 +55,8 @@ export class EmployeeFormComponent implements OnInit {
 
   ngOnInit(): void {
     this.mode = this.data?.mode || 'create';
-    this.form = this.fb.group({
+
+    const formConfig: any = {
       firstName: [
         this.data?.employee?.firstName || '',
         [Validators.required, Validators.minLength(2), Validators.maxLength(50)]
@@ -64,7 +70,16 @@ export class EmployeeFormComponent implements OnInit {
         [Validators.required, Validators.email, Validators.maxLength(100)]
       ],
       departmentId: [this.data?.employee?.departmentId || null],
-    });
+    };
+
+    // Add user account fields only in create mode
+    if (this.mode === 'create') {
+      formConfig.username = ['', [Validators.required, Validators.minLength(3), Validators.maxLength(50)]];
+      formConfig.password = ['', [Validators.required, Validators.minLength(6)]];
+      formConfig.roles = [['ROLE_EMPLOYEE'], Validators.required];
+    }
+
+    this.form = this.fb.group(formConfig);
 
     // Load departments
     this.loadDepartments();
@@ -118,6 +133,13 @@ export class EmployeeFormComponent implements OnInit {
 
     this.loading = true;
     const payload: Employee = this.form.value;
+
+    // Convert single role to array for backend
+    if (this.mode === 'create' && payload.roles) {
+      if (typeof payload.roles === 'string') {
+        payload.roles = [payload.roles];
+      }
+    }
 
     if (this.mode === 'create') {
       this.employeeService.create(payload).subscribe({

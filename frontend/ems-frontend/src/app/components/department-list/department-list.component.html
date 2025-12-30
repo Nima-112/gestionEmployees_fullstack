@@ -9,7 +9,13 @@
       </div>
     </div>
     <div class="header-actions">
-      <button mat-raised-button color="primary" (click)="openCreate()" class="create-btn">
+      <button
+        mat-raised-button
+        color="primary"
+        (click)="openCreate()"
+        class="create-btn"
+        *appHasRole="['ROLE_ADMIN', 'ROLE_MANAGER']"
+      >
         <mat-icon>add</mat-icon>
         Nouveau Département
       </button>
@@ -45,7 +51,13 @@
           Exporter CSV
         </button>
         @if (selection.selected.length > 0) {
-          <button mat-stroked-button color="warn" (click)="deleteSelected()" class="action-btn">
+          <button
+            mat-stroked-button
+            color="warn"
+            (click)="deleteSelected()"
+            class="action-btn"
+            *appHasRole="['ROLE_ADMIN', 'ROLE_MANAGER']"
+          >
             <mat-icon>delete_sweep</mat-icon>
             Supprimer ({{ selection.selected.length }})
           </button>
@@ -66,7 +78,12 @@
         <mat-icon class="empty-icon">business_center</mat-icon>
         <h3>Aucun département</h3>
         <p>Commencez par ajouter votre premier département au système</p>
-        <button mat-raised-button color="primary" (click)="openCreate()">
+        <button
+          mat-raised-button
+          color="primary"
+          (click)="openCreate()"
+          *appHasRole="['ROLE_ADMIN', 'ROLE_MANAGER']"
+        >
           <mat-icon>add</mat-icon>
           Ajouter un département
         </button>
@@ -144,6 +161,7 @@
                 (click)="openEdit(element); $event.stopPropagation()"
                 matTooltip="Modifier"
                 class="action-icon-btn"
+                *appHasRole="['ROLE_ADMIN', 'ROLE_MANAGER']"
               >
                 <mat-icon>edit</mat-icon>
               </button>
@@ -153,6 +171,7 @@
                 (click)="deleteDepartment(element.id, $event)"
                 matTooltip="Supprimer"
                 class="action-icon-btn"
+                *appHasRole="['ROLE_ADMIN', 'ROLE_MANAGER']"
               >
                 <mat-icon>delete</mat-icon>
               </button>

@@ -5,6 +5,7 @@ import net.javaguides.ems.dto.DepartmentDto;
 import net.javaguides.ems.service.DepartmentService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,6 +19,7 @@ public class DepartmentController {
 
     // Create Department REST API
     @PostMapping
+    @PreAuthorize("hasAnyRole('ADMIN', 'MANAGER')")
     public ResponseEntity<DepartmentDto> createDepartment(@RequestBody DepartmentDto departmentDto) {
         DepartmentDto savedDepartment = departmentService.createDepartment(departmentDto);
         return new ResponseEntity<>(savedDepartment, HttpStatus.CREATED);
@@ -25,6 +27,7 @@ public class DepartmentController {
 
     // Get Department by ID REST API
     @GetMapping("{id}")
+    @PreAuthorize("hasAnyRole('ADMIN', 'MANAGER', 'EMPLOYEE')")
     public ResponseEntity<DepartmentDto> getDepartmentById(@PathVariable("id") Long departmentId) {
         DepartmentDto departmentDto = departmentService.getDepartmentById(departmentId);
         return ResponseEntity.ok(departmentDto);
@@ -32,6 +35,7 @@ public class DepartmentController {
 
     // Get All Departments REST API
     @GetMapping
+    @PreAuthorize("hasAnyRole('ADMIN', 'MANAGER', 'EMPLOYEE')")
     public ResponseEntity<List<DepartmentDto>> getAllDepartments() {
         List<DepartmentDto> departments = departmentService.getAllDepartments();
         return ResponseEntity.ok(departments);
@@ -39,6 +43,7 @@ public class DepartmentController {
 
     // Update Department REST API
     @PutMapping("{id}")
+    @PreAuthorize("hasAnyRole('ADMIN', 'MANAGER')")
     public ResponseEntity<DepartmentDto> updateDepartment(
             @PathVariable("id") Long departmentId,
             @RequestBody DepartmentDto updatedDepartment) {
@@ -48,6 +53,7 @@ public class DepartmentController {
 
     // Delete Department REST API
     @DeleteMapping("{id}")
+    @PreAuthorize("hasAnyRole('ADMIN', 'MANAGER')")
     public ResponseEntity<String> deleteDepartment(@PathVariable("id") Long departmentId) {
         departmentService.deleteDepartment(departmentId);
         return ResponseEntity.ok("Department deleted successfully!");

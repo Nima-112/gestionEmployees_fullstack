@@ -19,6 +19,8 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { DepartmentFormComponent } from '../department-form/department-form.component';
 import { SelectionModel } from '@angular/cdk/collections';
+import { HasRoleDirective } from '../../directives/has-role.directive';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-department-list',
@@ -39,13 +41,14 @@ import { SelectionModel } from '@angular/cdk/collections';
     MatCardModule,
     MatCheckboxModule,
     MatTooltipModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    HasRoleDirective
   ],
   templateUrl: './department-list.component.html',
   styleUrls: ['./department-list.component.scss'],
 })
 export class DepartmentListComponent implements OnInit {
-  displayedColumns: string[] = ['select', 'id', 'name', 'description', 'employeeCount', 'actions'];
+  displayedColumns: string[] = [];
   dataSource = new MatTableDataSource<Department>([]);
   selection = new SelectionModel<Department>(true, []);
   searchText = '';
@@ -58,12 +61,21 @@ export class DepartmentListComponent implements OnInit {
     private departmentService: DepartmentService,
     private dialog: MatDialog,
     private snackBar: MatSnackBar,
-    private router: Router
+    private router: Router,
+    private authService: AuthService
   ) {}
 
   ngOnInit(): void {
+    this.setupColumns();
     this.load();
     this.setupFilter();
+  }
+
+  setupColumns(): void {
+    const canEdit = this.authService.hasAnyRole(['ROLE_ADMIN', 'ROLE_MANAGER']);
+    this.displayedColumns = canEdit
+      ? ['select', 'id', 'name', 'description', 'employeeCount', 'actions']
+      : ['id', 'name', 'description', 'employeeCount'];
   }
 
   setupFilter(): void {

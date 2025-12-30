@@ -19,6 +19,8 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { EmployeeFormComponent } from '../employee-form/employee-form.component';
 import { SelectionModel } from '@angular/cdk/collections';
+import { HasRoleDirective } from '../../directives/has-role.directive';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-employee-list',
@@ -38,13 +40,14 @@ import { SelectionModel } from '@angular/cdk/collections';
     MatCardModule,
     MatCheckboxModule,
     MatTooltipModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    HasRoleDirective
   ],
   templateUrl: './employee-list.component.html',
   styleUrls: ['./employee-list.component.scss'],
 })
 export class EmployeeListComponent implements OnInit {
-  displayedColumns: string[] = ['select', 'id', 'firstName', 'lastName', 'email', 'departmentName', 'actions'];
+  displayedColumns: string[] = [];
   dataSource = new MatTableDataSource<Employee>([]);
   selection = new SelectionModel<Employee>(true, []);
   searchText = '';
@@ -57,12 +60,21 @@ export class EmployeeListComponent implements OnInit {
     private employeeService: EmployeeService,
     private dialog: MatDialog,
     private snackBar: MatSnackBar,
-    private router: Router
+    private router: Router,
+    private authService: AuthService
   ) {}
 
   ngOnInit(): void {
+    this.setupColumns();
     this.load();
     this.setupFilter();
+  }
+
+  setupColumns(): void {
+    const canEdit = this.authService.hasAnyRole(['ROLE_ADMIN', 'ROLE_MANAGER']);
+    this.displayedColumns = canEdit
+      ? ['select', 'id', 'firstName', 'lastName', 'email', 'departmentName', 'actions']
+      : ['id', 'firstName', 'lastName', 'email', 'departmentName'];
   }
 
   setupFilter(): void {
